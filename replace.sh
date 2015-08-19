@@ -1,14 +1,15 @@
 #!/bin/sh
 
-
-for file in `ls`
+testa=`find . -type f -print | xargs grep "$1" | awk 'NR == 1' | wc -l`
+while [ $testa -eq 1 ]
 do
-	test=`grep "$1" $file | wc -l`
-	if [ $test -eq 1 ]
-	then
-		tmp="${file}_tmp"
-		cat $file | sed -e "s/$1/$2/g" > $tmp
-		rm $file
-		mv $tmp $file
-	fi
+    file=`find . -type f -print | xargs grep "$1" | awk 'NR == 1'`
+    fichier=`echo $file | cut -d : -f 1`
+    tmp="${fichier}_tmp"
+    echo $tmp
+    echo $fichier
+    cat $fichier | sed -e "s/$1/$2/g" > $tmp
+    rm $fichier
+    mv $tmp $fichier
+    testa=`find . -type f -print | xargs grep "$1" | awk 'NR == 1' | wc -l`
 done
