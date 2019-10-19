@@ -1,19 +1,32 @@
-#* ************************************************************************** *#
-#*                                                                            *#
-#*                                                        :::      ::::::::   *#
-#*   github.sh                                          :+:      :+:    :+:   *#
-#*                                                    +:+ +:+         +:+     *#
-#*   By: ntrancha <ntrancha@student.42.fr>          +#+  +:+       +#+        *#
-#*                                                +#+#+#+#+#+   +#+           *#
-#*   Created: 2015/08/31 11:14:47 by ntrancha          #+#    #+#             *#
-#*   Updated: 2015/08/31 11:16:44 by ntrancha         ###   ########.fr       *#
-#*                                                                            *#
-#* ************************************************************************** *#
+#!/bin/sh
 
 if [ -z $1 ]
 then
-		echo "Need project"
-		exit
+	echo "Utilisateur manquant"
+	exit;
 fi
 
-git clone https://github.com/ntrancha/$1.git
+url="https://github.com/$1?tab=repositories";
+wget $url 2> /dev/null;
+grep "codeRepository" $1* > tmp.log
+rm -rf $1* 
+lenuser=`expr length $1`
+lenuser2=`expr $lenuser + 9`
+
+while read ligne
+do
+	line=`echo $ligne | awk '{print $2}'`;
+	len=`expr length $line`
+	max=`expr $len - $lenuser2`
+	repo=`expr substr $line $lenuser2 $max`
+	if [ -d $repo ]
+	then
+		echo "Le repo \"$repo\" existe déjà";
+	fi
+	if [ ! -d $repo ]
+	then
+		git="https://github.com/$1/$repo.git"
+		git clone $git
+	fi
+done < tmp.log
+rm -rf tmp.log
